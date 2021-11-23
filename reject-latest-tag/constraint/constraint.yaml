@@ -1,19 +1,11 @@
-apiVersion: templates.gatekeeper.sh/v1beta1
-kind: ConstraintTemplate
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: LatestImage
 metadata:
-  name: latestimage
+  name: not-allowed
 spec:
-  crd:
-    spec:
-      names:
-        kind: LatestImage
-  targets:
-    - target: admission.k8s.gatekeeper.sh
-      rego: |
-        package latestimage
-
-        violation[{"msg": msg}] {
-          container := input.review.object.spec.containers[_]
-          endswith(container.image, ":latest")
-          msg := sprintf("container <%v> uses an image tagged with latest <%v>", [container.name, container.image])
-        }        
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+v
