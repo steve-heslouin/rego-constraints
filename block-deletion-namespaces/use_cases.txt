@@ -1,0 +1,15 @@
+# deleting this namespace should fail or warn
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    protected: "yes"
+  name: god-save-this-namespace
+
+# deleting this namespace should work
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: iam-rubbish
