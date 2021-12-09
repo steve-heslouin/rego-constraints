@@ -1,4 +1,4 @@
-# @enforcement dryrun
+# @enforcement warn
 # @kinds core/Namespace
 
 package demorestrictednamespace
