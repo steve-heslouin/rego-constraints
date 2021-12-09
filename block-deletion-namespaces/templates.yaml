@@ -1,0 +1,25 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  creationTimestamp: null
+  name: disablingdeletionprotectednamespace
+spec:
+  crd:
+    spec:
+      names:
+        kind: DisablingDeletionProtectedNamespace
+  targets:
+  - rego: |-
+      package demorestrictednamespace
+
+
+      violation[{ "msg": msg }]{
+          operation := input.review.operation
+          operation = "DELETE"
+          annotation := input.review.object.metadata.annotations.protected
+          not annotation = "no"
+          msg = sprintf("Namespace %v is annotated with protected=yes, thus it can not be deleted", [input.review.name])
+
+      }
+    target: admission.k8s.gatekeeper.sh
+status: {}
